@@ -37,26 +37,10 @@ class TestAndroidDevice(AppiumConfig):
         self.driver.find_element(AppiumBy.XPATH, "//android.widget.TextView[@text='Arts and humanities']").click()
 
         time.sleep(5)
-        # swipe until //android.widget.TextView[@text='Art of Asia'] presence
-        #  self.driver.swipe(902, 1174,924, 794,1)
+        self.driver.implicitly_wait(0)
+        while len(self.driver.find_elements(AppiumBy.XPATH,"//*[@text ='Art of Asia']")) == 0:
+            self.driver.swipe(902, 1174, 902, 794, 1000)
 
-        # scroll to art of asia and click
-        para_dic = {"strategy": AppiumBy.ANDROID_UIAUTOMATOR, "selector": 'UiSelector().text("Art of Asia")'}
-        self.driver.execute_script("mobile: scroll", para_dic)
-
-        self.driver.find_element(AppiumBy.XPATH, "//android.widget.TextView[@text='Art of Asia']").click()
-
-        # scroll to the himalayas and click
-        para_dic = {"strategy": AppiumBy.ANDROID_UIAUTOMATOR, "selector": 'UiSelector().textContains("Himala")'}
-        self.driver.execute_script("mobile: scroll", para_dic)
-
-        self.driver.find_element(AppiumBy.ANDROID_UIAUTOMATOR, 'UiSelector().textContains("Himala")').click()
-
-    def test_list_sms(self):
-        message = self.driver.execute_script("mobile: listSms", {"max": 2})
-        print(message)
-        print(message["items"])
-        print(message["total"])
-        print(message["items"][1])
-        print(message["items"][1]["body"])
-
+        self.driver.find_element(AppiumBy.XPATH,"//*[@text ='Art of Asia']").click()
+        self.driver.implicitly_wait(30)
+        time.sleep(5)

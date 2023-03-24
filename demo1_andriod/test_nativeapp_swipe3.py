@@ -3,6 +3,7 @@ import time
 import pytest
 from appium import webdriver
 from appium.webdriver.common.appiumby import AppiumBy
+from appium.webdriver.extensions.android.nativekey import AndroidKey
 
 
 class AppiumConfig():
@@ -36,27 +37,23 @@ class TestAndroidDevice(AppiumConfig):
 
         self.driver.find_element(AppiumBy.XPATH, "//android.widget.TextView[@text='Arts and humanities']").click()
 
+        size_dic = self.driver.get_window_size()
+        print(size_dic)
+        x1 = size_dic["width"]*(50/100)
+        y1 = size_dic["height"] * (75 / 100)
+        x2 = size_dic["width"] * (50 / 100)
+        y2 = size_dic["height"] * (25 / 100)
+        print(x1)
+        print(y1)
+        print(x2)
+        print(y2)
+
         time.sleep(5)
-        # swipe until //android.widget.TextView[@text='Art of Asia'] presence
-        #  self.driver.swipe(902, 1174,924, 794,1)
+        self.driver.implicitly_wait(0)
+        while len(self.driver.find_elements(AppiumBy.XPATH, "//*[@text ='Art of Asia']")) == 0:
+            self.driver.swipe(x1, y1, x2, x2, 1000)
 
-        # scroll to art of asia and click
-        para_dic = {"strategy": AppiumBy.ANDROID_UIAUTOMATOR, "selector": 'UiSelector().text("Art of Asia")'}
-        self.driver.execute_script("mobile: scroll", para_dic)
-
-        self.driver.find_element(AppiumBy.XPATH, "//android.widget.TextView[@text='Art of Asia']").click()
-
-        # scroll to the himalayas and click
-        para_dic = {"strategy": AppiumBy.ANDROID_UIAUTOMATOR, "selector": 'UiSelector().textContains("Himala")'}
-        self.driver.execute_script("mobile: scroll", para_dic)
-
-        self.driver.find_element(AppiumBy.ANDROID_UIAUTOMATOR, 'UiSelector().textContains("Himala")').click()
-
-    def test_list_sms(self):
-        message = self.driver.execute_script("mobile: listSms", {"max": 2})
-        print(message)
-        print(message["items"])
-        print(message["total"])
-        print(message["items"][1])
-        print(message["items"][1]["body"])
-
+        self.driver.find_element(AppiumBy.XPATH, "//*[contains(@text,'Asia')]").click()
+        self.driver.implicitly_wait(30)
+        self.driver.press_keycode(AndroidKey.BACK)
+        time.sleep(5)

@@ -41,7 +41,7 @@ class TestAdvanceCode(AppiumConfig):
         action = TouchAction(self.driver)
         action.tap(self.driver.find_element(AppiumBy.XPATH,"//android.widget.TextView[@text='Arts and humanities']"), count=5).perform()
 
-    def test_long_press_coordinates(self):
+    def test_long_press_webelement(self):
         time.sleep(10)
         self.driver.press_keycode(AndroidKey.HOME)
         time.sleep(2)
@@ -50,6 +50,9 @@ class TestAdvanceCode(AppiumConfig):
         action.long_press(self.driver.find_element(AppiumBy.XPATH, "//*[contains(@text,'Khan')]"),duration=100).perform()
         self.driver.find_element(AppiumBy.XPATH,"//*[contains(@text,'App in')]").click()
 
+    def test_press(self):
+        action = TouchAction(self.driver)
+        action.press(100, 100).wait(1000).move_to(200, 200).release()
 
 
 

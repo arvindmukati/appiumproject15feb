@@ -40,7 +40,7 @@ class TestAndroidDeviceLocal(AppiumConfig):
         #     self.driver.find_element(AppiumBy.XPATH, "//android.widget.TextView[@text='Dismiss']").click()
 
         if self.driver.is_app_installed("org.khanacademy.android"):
-            self.driver.activate_app("org.khanacademy.android")
+            self.driver.activate_app("org.khanacademy.android.ui.library.MainActivity")
         else:
             self.driver.install_app(r"C:\PythonTraining15Feb\Components\khan-academy-7-3-2.apk")
             # self.driver.launch_app()
@@ -55,6 +55,6 @@ class TestAndroidDeviceLocal(AppiumConfig):
         print(self.driver.capabilities)
         print(self.driver.current_activity)
         print(self.driver.current_package)
-        print(self.driver.device_time)
+        print(self.driver.device_time)  
         self.driver.remove_app("org.khanacademy.android")
         time.sleep(15)

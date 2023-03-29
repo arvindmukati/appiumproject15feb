@@ -19,27 +19,28 @@ class AppiumConfig:
             "deviceName": "oneplus",
             "appPackage": "org.khanacademy.android",
             "appActivity": "org.khanacademy.android.ui.library.MainActivity",
-            "noReset": True
-            # "udid":"emulator-5554"
+            "noReset": True,
+            #"udid":"emulator-5554"
         }
 
         self.driver = webdriver.Remote(command_executor="http://localhost:4723/wd/hub", desired_capabilities=des_cap)
         self.driver.implicitly_wait(30)
-        self.driver.start_recording_screen()
+
         yield
-        encoded = self.driver.stop_recording_screen()
-        print(encoded)
-        da = str(datetime.datetime.now()).replace(":","-").replace("/","-")
-        open(f"../recording/recording_{da}.mp4", "wb").write(base64.b64decode(encoded))
+        # encoded = self.driver.stop_recording_screen()
+        # #print(encoded)
+        # da = str(datetime.datetime.now()).replace(":","-").replace("/","-")
+        # open(f"../recording/recording.mp4", "wb").write(base64.b64decode(encoded))
         self.driver.quit()
 
 
 class TestAndroidDeviceLocal(AppiumConfig):
     def test_invalid_login(self):
         # presence of element - using length
+        # time.sleep(3)
         # if len(self.driver.find_elements(AppiumBy.ID, "//android.widget.TextView[@text='Dismiss']")) > 0:
-        #     self.driver.find_element(AppiumBy.XPATH, "//android.widget.TextView[@text='Dismiss']").click()
-
+        #   self.driver.find_element(AppiumBy.XPATH, "//android.widget.TextView[@text='Dismiss']").click()
+        self.driver.start_recording_screen()
         self.driver.find_element(AppiumBy.XPATH, "//android.widget.TextView[@text='Sign in']").click()
         self.driver.find_element(AppiumBy.XPATH, "//android.widget.TextView[@text='Sign in']").click()
         self.driver.find_element(AppiumBy.XPATH,
@@ -58,3 +59,7 @@ class TestAndroidDeviceLocal(AppiumConfig):
         print(actual_error)
         actual_error = self.driver.find_element(AppiumBy.XPATH, "//*[contains(@text,'issue')]").get_attribute("text")
         print(actual_error)
+        encoded = self.driver.stop_recording_screen()
+        # print(encoded)
+        da = str(datetime.datetime.now()).replace(":", "-").replace("/", "-")
+        open(r"recording.mp4", "wb").write(base64.b64decode(encoded))
